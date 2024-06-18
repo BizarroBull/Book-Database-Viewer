@@ -54,15 +54,12 @@ public class BBDBV extends JFrame
 {
 	private static final long serialVersionUID = 1L;
 
-	private final String m_sTitle = "Bull's Book Database Viewer v1.0.0";
+	private final String m_sTitle = "Bull's Book Database Viewer v1.0.1";
 
 	private final static String m_sINIFilename = "BBDBV.ini";
 
-	private final String m_sReaderRyan		= "Ryan";
-	// private String m_sReaderAlexandra	= "Alexandra";
-	// private String m_sReaderOwen			= "Owen";
-	// private String m_sReaderTessa		= "Tessa";
-	// private String m_sReaderDillon		= "Dillon";
+	private static String m_sReader;
+	private static String m_sBookCoverDirectory;
 
 	public class MyTableModel extends DefaultTableModel
 	{
@@ -124,7 +121,6 @@ public class BBDBV extends JFrame
 
 	private int m_nBookListCoverWidth = 258;
 	private int m_nBookListCoverHeight = 273;
-	private static String m_sBookCoverDirectory;
 
 	private JPanel contentPane;
 	private JScrollPane m_ScrollPane;
@@ -188,15 +184,19 @@ public class BBDBV extends JFrame
 					String sURL = ini.get( "login", "url" );
 					String sUser = ini.get( "login", "user" );
 					String sPassword = ini.get( "login", "password" );
-					m_sBookCoverDirectory = ini.get( "images", "directory" );
+					m_sReader = ini.get( "user", "reader" );
+					m_sBookCoverDirectory = ini.get( "user", "directory" );
 
-					m_DBBooks.connect( sURL, sUser, sPassword );
+					boolean bConnected = m_DBBooks.connect( sURL, sUser, sPassword );
 
-					m_lbl_StatusBar.setText( "Connected to Bull's Book Database ");
+					if( bConnected )
+						m_lbl_StatusBar.setText( "Connected to Bull's Book Database");
+					else
+						m_lbl_StatusBar.setText( "Error: Couldn't connect to Bull's Book Database");
 				}
 				catch (Exception e)
 				{
-					m_lbl_StatusBar.setText( "Error: Couldn't connect to Bull's Book Database ");
+					m_lbl_StatusBar.setText( "Error: Couldn't connect to Bull's Book Database");
 
 					e.printStackTrace();
 				}
@@ -300,14 +300,12 @@ public class BBDBV extends JFrame
          	if( tblCols.getColumn(i).getHeaderValue() == sColumnName )
         	{
     			System.out.println( "found column" );
-       		//b 			m_TableModel.addColumn( sColumnNameBookIdentifier );
 
         		// Remove the column.
         		tblCols.removeColumn( tblCols.getColumn( i ) );
         		break;
         	}
         }
-
 		
 	}
 
@@ -387,7 +385,7 @@ public class BBDBV extends JFrame
 		}
 		catch ( IOException e )
 		{
-			System.out.println("An error occurred.");
+			System.err.println("An error occurred.");
 			e.printStackTrace();
 		}
 	}
@@ -520,7 +518,7 @@ public class BBDBV extends JFrame
 
 				try
 				{
-					ResultSet rs = m_DBBooks.Search(	m_sReaderRyan, sSearchDateCompletedStart, sSearchDateCompletedEnd,
+					ResultSet rs = m_DBBooks.Search(	m_sReader, sSearchDateCompletedStart, sSearchDateCompletedEnd,
 														sSearchAuthor, sSearchTitle,
 														chckbx_IgnoreCollections.isSelected(), chckbx_IgnoreCollectedStories.isSelected() );
 
@@ -608,7 +606,7 @@ public class BBDBV extends JFrame
 				int nRow = m_TableResults.getSelectedRow();
 				if( nRow >= 0 )
 				{
-					String sReader = m_sReaderRyan;
+					String sReader = m_sReader;
 
 					String sDateCompleted = m_TableModel.getValueAt( nRow, m_nColumnNumDateCompleted ).toString();
 					LocalDate dateCompleted = null;
@@ -872,7 +870,7 @@ public class BBDBV extends JFrame
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				String sReader = m_sReaderRyan;
+				String sReader = m_sReader;
 
 				String sDateCompleted = textField_DateCompleted.getText();
 				LocalDate dateCompleted = null;
@@ -1248,7 +1246,7 @@ public class BBDBV extends JFrame
 					// Create a book object from the data in this row of the table.
 
 					Object tableValue;
-					String sReader = m_sReaderRyan;
+					String sReader = m_sReader;
 					String sDateCompleted = "";
 					LocalDate dateCompleted = null;
 					String sTitle = "";
@@ -1383,7 +1381,7 @@ public class BBDBV extends JFrame
 					// Create a book object from the data in this row of the table.
 
 					Object tableValue;
-					String sReader = m_sReaderRyan;
+					String sReader = m_sReader;
 					String sDateCompleted = "";
 					LocalDate dateCompleted = null;
 					String sTitle = "";

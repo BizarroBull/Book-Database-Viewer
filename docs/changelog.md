@@ -1,6 +1,17 @@
 # Bull's Book Database Viewer Changelog
 
 
+## v1.0.1 - 2024-06-18
+
+### Fixed
+
+- report an error when connecting to db fails
+
+### Changed
+
+- exceptions now writing strings to System.err instead of System.out
+- read reader name from ini file
+
 
 ## v1.0.0 - 2024-02-08
 

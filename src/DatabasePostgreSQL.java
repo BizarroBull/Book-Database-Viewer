@@ -13,13 +13,7 @@ public class DatabasePostgreSQL
 	// connect
 	// ------------------------------------------------------------------------
 
-	//
-	// Connect to the PostgreSQL database
-	//
-	// @return a Connection object
-	//
-
-	public Connection connect( String sURL, String sUser, String sPassword )
+	public boolean connect( String sURL, String sUser, String sPassword )
 	{
 		try
 		{
@@ -28,10 +22,11 @@ public class DatabasePostgreSQL
 		}
 		catch (SQLException e)
 		{
-			System.out.println( e.getMessage() );
+			System.err.println( e.getMessage() );
+			return false;
 		}
 
-		return m_Conn;
+		return true;
 	}
 
 	// ------------------------------------------------------------------------
@@ -114,8 +109,8 @@ public class DatabasePostgreSQL
 		}
 		catch (SQLException e)
 		{
-			System.out.print( "Search: " );
-			System.out.println( e.getMessage() );
+			System.err.print( "Search: " );
+			System.err.println( e.getMessage() );
 		}
 
 		return rs;

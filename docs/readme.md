@@ -16,13 +16,21 @@ The login details should be in a section named `[login]`. Available settings are
 - `[user]` for the database login user name
 - `[password]` for the database login password
 
-The image details should be in a section named `[images]`. Available settings are:
+The user details should be in a section named `[user]`. Available settings are:
+- `[reader]` for the name of the reader.
 - `[directory]` for the location of the book cover images.
 
 
 ## Book Cover Images:
 
 A book cover image should be sorted into a subdirectory for the year that the book was completed. For example, `[directory]\2024\[filename]`
+
+
+## Database
+
+A PostgreSQL database can be created using the schema only backup included with the releases.
+
+<img title="PostgreSQL" width="80" src="PostgreSQL_logo.3colors.svg">
 
 
 ## Importing
